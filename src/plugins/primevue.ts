@@ -27,6 +27,7 @@ import InputMask from "primevue/inputmask";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import InputSwitch from "primevue/inputswitch";
+import Listbox from "primevue/listbox";
 import Menu from "primevue/menu";
 import Menubar from "primevue/menubar";
 import MultiSelect from "primevue/multiselect";
@@ -76,6 +77,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("InputNumber", InputNumber);
   app.component("InputText", InputText);
   app.component("InputSwitch", InputSwitch);
+  app.component("Listbox", Listbox);
   app.component("Menu", Menu);
   app.component("Menubar", Menubar);
   app.component("MultiSelect", MultiSelect);

@@ -138,7 +138,66 @@
             </div>
           </div>
         </Card>
-        <Card class="col-span-6">Test</Card>
+        <Card class="col-span-6">
+          <h1 class="text-xl font-semi mb-4">RadioButton</h1>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="field-radiobutton">
+              <RadioButton inputId="option1" name="option" value="Option 1" />
+              <label for="option1">Option 1</label>
+            </div>
+            <div class="field-radiobutton">
+              <RadioButton inputId="option2" name="option" value="Option 2" />
+              <label for="option2">Option 2</label>
+            </div>
+            <div class="field-radiobutton">
+              <RadioButton inputId="option3" name="option" value="option3" />
+              <label for="option3">Option 3</label>
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">Checkbox</h1>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="field-radiobutton">
+              <Checkbox inputId="option01" name="option" value="Option 01" />
+              <label for="option01">Option 1</label>
+            </div>
+            <div class="field-radiobutton">
+              <Checkbox inputId="option02" name="option" value="Option 02" />
+              <label for="option02">Option 2</label>
+            </div>
+            <div class="field-radiobutton">
+              <Checkbox inputId="option03" name="option" value="Option 03" />
+              <label for="option03">Option 3</label>
+            </div>
+          </div>
+        </Card>
+        <Card class="col-span-6">
+          <h1 class="text-xl font-semi mb-4">Listbox</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <Listbox
+                v-model="selectedCountries"
+                :options="listBoxCountries"
+                :multiple="true"
+                :filter="true"
+                optionLabel="name"
+                listStyle="max-height:250px"
+                style="width: 15rem"
+                filterPlaceholder="Search"
+              >
+                <template #option="slotProps">
+                  <div class="country-item">
+                    <img
+                      src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
+                      width="18"
+                      class="mr-2"
+                    />
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </Listbox>
+            </div>
+          </div>
+        </Card>
       </main>
     </div>
   </div>
@@ -174,6 +233,19 @@ export default defineComponent({
       }, 250);
     };
 
+    const listBoxCountries = ref([
+      { name: "Australia", code: "AU" },
+      { name: "Brazil", code: "BR" },
+      { name: "China", code: "CN" },
+      { name: "Egypt", code: "EG" },
+      { name: "France", code: "FR" },
+      { name: "Germany", code: "DE" },
+      { name: "India", code: "IN" },
+      { name: "Japan", code: "JP" },
+      { name: "Spain", code: "ES" },
+      { name: "United States", code: "US" },
+    ]);
+
     onMounted(() => {
       countryService.value
         .getCountries()
@@ -182,6 +254,7 @@ export default defineComponent({
 
     return {
       filteredCountries,
+      listBoxCountries,
       selectedCountries,
       searchCountry,
       selectedCountry,
