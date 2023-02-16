@@ -10,6 +10,7 @@ import Tooltip from "primevue/tooltip";
 // components
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
+import AutoComplete from "primevue/autocomplete";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Chart from "primevue/chart";
@@ -58,6 +59,7 @@ export function initPrimeVue(app: App<Element>) {
   // register components
   app.component("Accordion", Accordion);
   app.component("AccordionTab", AccordionTab);
+  app.component("AutoComplete", AutoComplete);
   app.component("Button", Button);
   app.component("Calendar", Calendar);
   app.component("Chart", Chart);

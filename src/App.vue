@@ -81,6 +81,62 @@
             <InputText disabled="true" placeholder="Disabled" />
             <InputText class="p-invalid" placeholder="Invalid" />
           </div>
+          <h1 class="text-xl font-semi mb-4">Icons</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText type="text" placeholder="User" />
+              </span>
+            </div>
+            <div>
+              <span class="p-input-icon-right">
+                <i class="pi pi-spin pi-spinner" />
+                <InputText type="text" placeholder="Search" />
+              </span>
+            </div>
+            <div>
+              <span class="p-input-icon-left p-input-icon-right">
+                <i class="pi pi-user" />
+                <InputText type="text" placeholder="Search" />
+                <i class="pi pi-spin pi-spinner" />
+              </span>
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">Float Label</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <span class="p-float-label">
+                <InputText id="inputtext" type="text" />
+                <label for="inputtext">InputText</label>
+              </span>
+            </div>
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <span class="p-float-label">
+                <Textarea id="textarea" rows="3" />
+                <label for="textarea">Textarea</label>
+              </span>
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">AutoComplete</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <AutoComplete
+                v-model="selectedCountry"
+                :suggestions="filteredCountries"
+                @complete="searchCountry($event)"
+                :dropdown="true"
+                optionLabel="name"
+                forceSelection
+              >
+                <template #item="slotProps">
+                  <div class="country-item">
+                    <div class="ml-2">{{ slotProps.item.name }}</div>
+                  </div>
+                </template>
+              </AutoComplete>
+            </div>
+          </div>
         </Card>
         <Card class="col-span-6">Test</Card>
       </main>
@@ -89,13 +145,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import Card from "./components/Card.vue";
+import CountryService from "./service/CountryService";
 
 export default defineComponent({
   name: "App",
   components: {
     Card,
+  },
+  setup() {
+    const countryService = ref(new CountryService());
+    const countries = ref();
+    const filteredCountries = ref();
+    const selectedCountries = ref([]);
+    const selectedCountry = ref();
+    const searchCountry = (event: any) => {
+      setTimeout(() => {
+        if (!event.query.trim().length) {
+          filteredCountries.value = [...countries.value];
+        } else {
+          filteredCountries.value = countries.value.filter((country: any) => {
+            return country.name
+              .toLowerCase()
+              .startsWith(event.query.toLowerCase());
+          });
+        }
+      }, 250);
+    };
+
+    onMounted(() => {
+      countryService.value
+        .getCountries()
+        .then((data) => (countries.value = data));
+    });
+
+    return {
+      filteredCountries,
+      selectedCountries,
+      searchCountry,
+      selectedCountry,
+    };
   },
 });
 </script>
