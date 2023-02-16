@@ -137,6 +137,29 @@
               </AutoComplete>
             </div>
           </div>
+          <h1 class="text-xl font-semi mb-4">Calendar</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <Calendar inputId="icon" v-model="date3" :showIcon="true" />
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">InputNumber</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <InputNumber
+                inputId="stacked"
+                v-model="value17"
+                showButtons
+                mode="decimal"
+              />
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">Chips</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <Chips v-model="chips" />
+            </div>
+          </div>
         </Card>
         <Card class="col-span-6">
           <h1 class="text-xl font-semi mb-4">RadioButton</h1>
@@ -186,15 +209,55 @@
               >
                 <template #option="slotProps">
                   <div class="country-item">
-                    <img
-                      src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-                      width="18"
-                      class="mr-2"
-                    />
                     <div>{{ slotProps.option.name }}</div>
                   </div>
                 </template>
               </Listbox>
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">Dropdown</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <Dropdown
+                v-model="selectedCity1"
+                :options="listBoxCountries"
+                optionLabel="name"
+                optionValue="code"
+                placeholder="Select a City"
+              />
+            </div>
+          </div>
+          <h1 class="text-xl font-semi mb-4">MultiSelect</h1>
+          <div class="grid">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+              <MultiSelect
+                v-model="selectedCountries"
+                :options="listBoxCountries"
+                optionLabel="name"
+                placeholder="Select Countries"
+                :filter="true"
+                class="multiselect-custom"
+              >
+                <template #value="slotProps">
+                  <div
+                    class="country-item country-item-value"
+                    v-for="option of slotProps.value"
+                    :key="option.code"
+                  >
+                    <div>{{ option.name }}</div>
+                  </div>
+                  <template
+                    v-if="!slotProps.value || slotProps.value.length === 0"
+                  >
+                    Select Countries
+                  </template>
+                </template>
+                <template #option="slotProps">
+                  <div class="country-item">
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </MultiSelect>
             </div>
           </div>
         </Card>
@@ -214,6 +277,7 @@ export default defineComponent({
     Card,
   },
   setup() {
+    const chips = ref();
     const countryService = ref(new CountryService());
     const countries = ref();
     const filteredCountries = ref();
@@ -253,6 +317,7 @@ export default defineComponent({
     });
 
     return {
+      chips,
       filteredCountries,
       listBoxCountries,
       selectedCountries,

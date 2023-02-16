@@ -15,6 +15,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Chart from "primevue/chart";
 import Checkbox from "primevue/checkbox";
+import Chips from "primevue/chips";
 import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmPopup from "primevue/confirmpopup";
@@ -65,6 +66,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("Calendar", Calendar);
   app.component("Chart", Chart);
   app.component("Checkbox", Checkbox);
+  app.component("Chips", Chips);
   app.component("Column", Column);
   app.component("ConfirmDialog", ConfirmDialog);
   app.component("ConfirmPopup", ConfirmPopup);
