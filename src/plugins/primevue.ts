@@ -20,6 +20,7 @@ import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmPopup from "primevue/confirmpopup";
 import ContextMenu from "primevue/contextmenu";
+import DataTable from "primevue/datatable";
 import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
@@ -35,11 +36,14 @@ import MultiSelect from "primevue/multiselect";
 import PanelMenu from "primevue/panelmenu";
 import ProgressBar from "primevue/progressbar";
 import RadioButton from "primevue/radiobutton";
+import Rating from "primevue/rating";
 import SelectButton from "primevue/selectbutton";
 import Sidebar from "primevue/sidebar";
+import Slider from "primevue/slider";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Textarea from "primevue/textarea";
+import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
 
 // styling
@@ -71,6 +75,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("ConfirmDialog", ConfirmDialog);
   app.component("ConfirmPopup", ConfirmPopup);
   app.component("ContextMenu", ContextMenu);
+  app.component("DataTable", DataTable);
   app.component("Dialog", Dialog);
   app.component("Dropdown", Dropdown);
   app.component("Editor", Editor);
@@ -86,10 +91,13 @@ export function initPrimeVue(app: App<Element>) {
   app.component("PanelMenu", PanelMenu);
   app.component("ProgressBar", ProgressBar);
   app.component("RadioButton", RadioButton);
+  app.component("Rating", Rating);
   app.component("SelectButton", SelectButton);
   app.component("Sidebar", Sidebar);
+  app.component("Slider", Slider);
   app.component("TabPanel", TabPanel);
   app.component("TabView", TabView);
   app.component("Textarea", Textarea);
+  app.component("ToggleButton", ToggleButton);
   app.component("Tree", Tree);
 }

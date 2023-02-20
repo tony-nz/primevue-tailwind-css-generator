@@ -2,7 +2,7 @@
 <template>
   <div
     :class="getClass"
-    class="rounded-lg bg-white overflow-hidden mb-4 p-4 shadow w-full"
+    class="rounded-lg bg-white overflow-hidden mb-4 p-4 shadow w-full self-start"
   >
     <slot />
   </div>
