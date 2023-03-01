@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ elementConfig["successBackground"] }}
+    {{ elementConfig }}
     <!-- Static sidebar for desktop -->
     <div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
@@ -33,7 +33,7 @@
                 <div v-else-if="child.type === 'text'" class="flex justify-end">
                   <input
                     type="text"
-                    v-model="child.default"
+                    v-model="elementConfig[child.name]"
                     class="bg-gray-200 p-2 rounded text-black w-2/3 text-right text-sm"
                   />
                 </div>
@@ -1134,14 +1134,6 @@ export default defineComponent({
 </script>
 
 <style>
-.p-colorpicker-preview {
-  background-color: #ffffff;
-  border-radius: 4px;
-  font-size: 1rem;
-  width: 20px !important;
-  height: 5px;
-}
-
 :root {
   --surface-a: #ffffff;
   --surface-b: #fafafa;
@@ -1151,12 +1143,9 @@ export default defineComponent({
   --surface-f: #ffffff;
   --text-color: v-bind("getColor('text')");
   --text-color-secondary: #71717a;
-  --primary-color: #4f46e5;
+  --primary-color: v-bind("getColor('primary')");
   --primary-color-text: #ffffff;
-  --font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
-    Noto Color Emoji;
+  --font-family: v-bind("getColor('fontFamily')");
   --surface-0: #ffffff;
   --surface-50: #fafafa;
   --surface-100: #f4f4f5;
@@ -1242,10 +1231,7 @@ export default defineComponent({
 }
 
 .p-component {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
   font-size: 1rem;
   font-weight: normal;
 }
@@ -1274,10 +1260,7 @@ export default defineComponent({
 
 .p-link {
   font-size: 1rem;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
   border-radius: 0.375rem;
 }
 
@@ -1454,7 +1437,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-autocomplete .p-autocomplete-multiple-container {
@@ -1470,10 +1453,7 @@ export default defineComponent({
   .p-autocomplete-multiple-container
   .p-autocomplete-input-token
   input {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
   font-size: 1rem;
   color: v-bind("getColor('text')");
   padding: 0;
@@ -1640,7 +1620,7 @@ export default defineComponent({
   .p-datepicker-header
   .p-datepicker-title
   .p-datepicker-month:enabled:hover {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
@@ -1860,7 +1840,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-cascadeselect .p-cascadeselect-label {
@@ -1987,8 +1967,8 @@ export default defineComponent({
 }
 
 .p-checkbox .p-checkbox-box.p-highlight {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  background: v-bind("getColor('primary')");
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
@@ -1999,12 +1979,12 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  background: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -2017,7 +1997,7 @@ export default defineComponent({
 }
 
 .p-input-filled .p-checkbox .p-checkbox-box.p-highlight {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-input-filled .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
@@ -2027,7 +2007,7 @@ export default defineComponent({
 .p-input-filled
   .p-checkbox:not(.p-checkbox-disabled)
   .p-checkbox-box.p-highlight:hover {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-chips:not(.p-disabled):hover .p-chips-multiple-container {
@@ -2038,7 +2018,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-chips .p-chips-multiple-container {
@@ -2067,10 +2047,7 @@ export default defineComponent({
 }
 
 .p-chips .p-chips-multiple-container .p-chips-input-token input {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
   font-size: 1rem;
   color: v-bind("getColor('text')");
   padding: 0;
@@ -2116,7 +2093,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-dropdown.p-dropdown-clearable .p-dropdown-label {
@@ -2390,19 +2367,19 @@ export default defineComponent({
 .p-editor-container .ql-snow.ql-toolbar button.ql-active,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-label.ql-active,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-item.ql-selected {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-editor-container .ql-snow.ql-toolbar button.ql-active .ql-stroke,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke {
-  stroke: #4f46e5;
+  stroke: v-bind("getColor('primary')");
 }
 
 .p-editor-container .ql-snow.ql-toolbar button.ql-active .ql-fill,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
 .p-editor-container .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill {
-  fill: #4f46e5;
+  fill: v-bind("getColor('primary')");
 }
 
 .p-editor-container .ql-snow.ql-toolbar button.ql-active .ql-picker-label,
@@ -2414,7 +2391,7 @@ export default defineComponent({
   .ql-snow.ql-toolbar
   .ql-picker-item.ql-selected
   .ql-picker-label {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-inputgroup-addon {
@@ -2532,7 +2509,7 @@ export default defineComponent({
 }
 
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
@@ -2549,10 +2526,7 @@ export default defineComponent({
 }
 
 .p-inputtext {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
   font-size: 1rem;
   color: v-bind("getColor('text')");
   background: #ffffff;
@@ -2571,7 +2545,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-inputtext.p-invalid.p-component {
@@ -2738,7 +2712,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-listbox.p-invalid {
@@ -2760,7 +2734,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-multiselect .p-multiselect-label {
@@ -2986,7 +2960,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
@@ -2997,13 +2971,13 @@ export default defineComponent({
 }
 
 .p-radiobutton .p-radiobutton-box.p-highlight {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  background: v-bind("getColor('primary')");
 }
 
 .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  background: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -3024,13 +2998,13 @@ export default defineComponent({
 }
 
 .p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-input-filled
   .p-radiobutton
   .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-rating {
@@ -3051,17 +3025,17 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-rating:not(.p-disabled):not(.p-readonly)
   .p-rating-item:hover
   .p-rating-icon {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-rating:not(.p-disabled):not(.p-readonly)
@@ -3098,8 +3072,8 @@ export default defineComponent({
 }
 
 .p-selectbutton .p-button.p-highlight {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -3151,7 +3125,7 @@ export default defineComponent({
   height: 1.143rem;
   width: 1.143rem;
   background: #ffffff;
-  border: 2px solid #4f46e5;
+  border: 2px solid v-bind("getColor('primary')");
   border-radius: 50%;
   transition: none;
 }
@@ -3163,12 +3137,12 @@ export default defineComponent({
 }
 
 .p-slider .p-slider-range {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-slider:not(.p-disabled) .p-slider-handle:hover {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-treeselect {
@@ -3186,7 +3160,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-treeselect .p-treeselect-label {
@@ -3269,7 +3243,7 @@ export default defineComponent({
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #6366f1;
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
 }
 
 .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
@@ -3286,8 +3260,8 @@ export default defineComponent({
 }
 
 .p-togglebutton.p-button.p-highlight {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -3313,8 +3287,8 @@ export default defineComponent({
 
 .p-button {
   color: #ffffff;
-  background: #4f46e5;
-  border: 1px solid #4f46e5;
+  background: v-bind("getColor('primary')");
+  border: 1px solid v-bind("getColor('primary')");
   padding: 0.75rem 1rem;
   font-size: 1rem;
   transition: none;
@@ -3335,19 +3309,19 @@ export default defineComponent({
 
 .p-button.p-button-outlined {
   background-color: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border: 1px solid;
 }
 
 .p-button.p-button-outlined:enabled:hover {
   background: rgba(79, 70, 229, 0.04);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border: 1px solid;
 }
 
 .p-button.p-button-outlined:enabled:active {
   background: rgba(79, 70, 229, 0.16);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border: 1px solid;
 }
 
@@ -3368,19 +3342,19 @@ export default defineComponent({
 
 .p-button.p-button-text {
   background-color: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
 .p-button.p-button-text:enabled:hover {
   background: rgba(79, 70, 229, 0.04);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
 .p-button.p-button-text:enabled:active {
   background: rgba(79, 70, 229, 0.16);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -3429,7 +3403,7 @@ export default defineComponent({
   min-width: 1rem;
   height: 1rem;
   line-height: 1rem;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   background-color: #ffffff;
 }
 
@@ -3968,14 +3942,14 @@ export default defineComponent({
 }
 
 .p-button.p-button-link {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   background: transparent;
   border: transparent;
 }
 
 .p-button.p-button-link:enabled:hover {
   background: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -3991,7 +3965,7 @@ export default defineComponent({
 
 .p-button.p-button-link:enabled:active {
   background: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -4083,7 +4057,7 @@ export default defineComponent({
 
 .p-splitbutton.p-button-outlined > .p-button {
   background-color: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border: 1px solid;
 }
 
@@ -4091,14 +4065,14 @@ export default defineComponent({
 .p-splitbutton.p-button-outlined
   > .p-button:not(button):not(a):not(.p-disabled):hover {
   background: rgba(79, 70, 229, 0.04);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-splitbutton.p-button-outlined > .p-button:enabled:active,
 .p-splitbutton.p-button-outlined
   > .p-button:not(button):not(a):not(.p-disabled):active {
   background: rgba(79, 70, 229, 0.16);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-splitbutton.p-button-outlined.p-button-plain > .p-button {
@@ -4122,7 +4096,7 @@ export default defineComponent({
 
 .p-splitbutton.p-button-text > .p-button {
   background-color: transparent;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -4130,7 +4104,7 @@ export default defineComponent({
 .p-splitbutton.p-button-text
   > .p-button:not(button):not(a):not(.p-disabled):hover {
   background: rgba(79, 70, 229, 0.04);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -4138,7 +4112,7 @@ export default defineComponent({
 .p-splitbutton.p-button-text
   > .p-button:not(button):not(a):not(.p-disabled):active {
   background: rgba(79, 70, 229, 0.16);
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   border-color: transparent;
 }
 
@@ -4572,20 +4546,20 @@ export default defineComponent({
 
 .p-datatable .p-sortable-column.p-highlight {
   background: #fafafa;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-sortable-column.p-highlight:hover {
   background: #f4f4f5;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-sortable-column:focus {
@@ -4671,7 +4645,7 @@ export default defineComponent({
 }
 
 .p-datatable .p-column-resizer-helper {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-datatable-scrollable-header,
@@ -5055,8 +5029,8 @@ export default defineComponent({
 }
 
 .fc.fc-unthemed .fc-view-container .fc-event {
-  background: #4f46e5;
-  border: 1px solid #4f46e5;
+  background: v-bind("getColor('primary')");
+  border: 1px solid v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -5067,8 +5041,8 @@ export default defineComponent({
 
 .fc.fc-unthemed .fc-toolbar .fc-button {
   color: #ffffff;
-  background: #4f46e5;
-  border: 1px solid #4f46e5;
+  background: v-bind("getColor('primary')");
+  border: 1px solid v-bind("getColor('primary')");
   font-size: 1rem;
   transition: none;
   border-radius: 0.375rem;
@@ -5140,8 +5114,8 @@ export default defineComponent({
 .fc.fc-unthemed .fc-toolbar .fc-button.fc-dayGridMonth-button.fc-button-active,
 .fc.fc-unthemed .fc-toolbar .fc-button.fc-timeGridWeek-button.fc-button-active,
 .fc.fc-unthemed .fc-toolbar .fc-button.fc-timeGridDay-button.fc-button-active {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -5272,8 +5246,8 @@ export default defineComponent({
 
 .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
   color: #ffffff;
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
 }
 
 .fc.fc-theme-standard
@@ -5287,8 +5261,8 @@ export default defineComponent({
   .fc-view-harness
   .fc-event.fc-daygrid-dot-event
   .fc-daygrid-event-dot {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
 }
 
 .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-dot-event:hover {
@@ -5302,8 +5276,8 @@ export default defineComponent({
 
 .fc.fc-theme-standard .fc-toolbar .fc-button {
   color: #ffffff;
-  background: #4f46e5;
-  border: 1px solid #4f46e5;
+  background: v-bind("getColor('primary')");
+  border: 1px solid v-bind("getColor('primary')");
   font-size: 1rem;
   transition: none;
   border-radius: 0.375rem;
@@ -5330,8 +5304,8 @@ export default defineComponent({
 .fc.fc-theme-standard .fc-toolbar .fc-button:disabled {
   opacity: 0.6;
   color: #ffffff;
-  background: #4f46e5;
-  border: 1px solid #4f46e5;
+  background: v-bind("getColor('primary')");
+  border: 1px solid v-bind("getColor('primary')");
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-left {
@@ -5386,8 +5360,8 @@ export default defineComponent({
 .fc.fc-theme-standard
   .fc-toolbar
   .fc-button.fc-timeGridDay-button.fc-button-active {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: v-bind("getColor('primary')");
+  border-color: v-bind("getColor('primary')");
   color: #ffffff;
 }
 
@@ -5725,7 +5699,7 @@ export default defineComponent({
 }
 
 .p-timeline .p-timeline-event-marker {
-  border: 2px solid #4f46e5;
+  border: 2px solid v-bind("getColor('primary')");
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
@@ -5971,11 +5945,11 @@ export default defineComponent({
 
 .p-treetable .p-sortable-column.p-highlight {
   background: #fafafa;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-treetable .p-sortable-column.p-highlight .p-sortable-column-icon {
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
 }
 
 .p-treetable .p-treetable-tbody > tr {
@@ -6062,7 +6036,7 @@ export default defineComponent({
 }
 
 .p-treetable .p-column-resizer-helper {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-treetable .p-treetable-scrollable-header,
@@ -6507,13 +6481,13 @@ export default defineComponent({
 
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
   background: #ffffff;
-  border-color: #4f46e5;
-  color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  color: v-bind("getColor('primary')");
 }
 
 .p-tabview .p-tabview-nav-btn.p-link {
   background: #ffffff;
-  color: #4f46e5;
+  color: v-bind("getColor('primary')");
   width: 3rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -6698,7 +6672,7 @@ export default defineComponent({
 }
 
 .p-overlaypanel .p-overlaypanel-close {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
   color: #ffffff;
   width: 2rem;
   height: 2rem;
@@ -8341,8 +8315,8 @@ export default defineComponent({
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
   background: #ffffff;
-  border-color: #4f46e5;
-  color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
+  color: v-bind("getColor('primary')");
 }
 
 .p-tieredmenu {
@@ -8970,7 +8944,7 @@ export default defineComponent({
 }
 
 .p-badge {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -9081,7 +9055,7 @@ export default defineComponent({
 .p-progressbar .p-progressbar-value {
   border: 0 none;
   margin: 0;
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
 }
 
 .p-progressbar .p-progressbar-label {
@@ -9182,7 +9156,7 @@ export default defineComponent({
 }
 
 .p-tag {
-  background: #4f46e5;
+  background: v-bind("getColor('primary')");
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -9224,10 +9198,7 @@ export default defineComponent({
 
 .p-terminal .p-terminal-input {
   font-size: 1rem;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: v-bind("getColor('fontFamily')");
 }
 
 /* Customizations to the designer theme should be defined here */
@@ -9265,7 +9236,7 @@ export default defineComponent({
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  border-color: #4f46e5;
+  border-color: v-bind("getColor('primary')");
   margin-right: 1px;
 }
 
@@ -9314,19 +9285,19 @@ export default defineComponent({
 }
 
 .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
-  background-color: #4f46e5;
+  background-color: v-bind("getColor('primary')");
 }
 
 .p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
-  background-color: #4f46e5;
+  background-color: v-bind("getColor('primary')");
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-top > td {
-  box-shadow: inset 0 2px 0 0 #4f46e5;
+  box-shadow: inset 0 2px 0 0 v-bind("getColor('primary')");
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-bottom > td {
-  box-shadow: inset 0 -2px 0 0 #4f46e5;
+  box-shadow: inset 0 -2px 0 0 v-bind("getColor('primary')");
 }
 
 .p-speeddial-item.p-focus > .p-speeddial-action {
