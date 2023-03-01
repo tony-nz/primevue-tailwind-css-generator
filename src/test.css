@@ -1,0 +1,15 @@
+.p-colorpicker-preview {
+  background-color: #000000;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 50px;
+  height: 27px;
+}
+
+.p-button.p-button-secondary,
+.p-buttonset.p-button-secondary>.p-button,
+.p-splitbutton.p-button-secondary>.p-button {
+  color: #ffffff;
+  background: v-bind("color");
+  border: 1px solid #64748b;
+}
