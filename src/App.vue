@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ elementConfig }}
     <!-- Static sidebar for desktop -->
     <div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
@@ -80,6 +79,12 @@
 
       <main class="grid grid-cols-12 gap-8 p-8">
         <Card class="col-span-6">
+          <button @click="parseCSS">Parse CSS</button>
+          <ul>
+            <li v-for="(rule, index) in cssRules" :key="index">
+              {{ rule.selectors }}: {{ rule.styles }}
+            </li>
+          </ul>
           <h1 class="text-xl font-semi mb-4">InputText</h1>
           <div class="grid grid-cols-3 gap-4">
             <InputText placeholder="Default" />
@@ -1100,6 +1105,37 @@ export default defineComponent({
     const getColor = (elementName: string) => {
       return "#" + elementConfig.value[elementName];
     };
+    const cssText = ref(""); // store the CSS text here
+    const cssRules: any = ref([]); // the array of objects representing the CSS
+    const parseCSS = async () => {
+      // fetch the CSS file
+      const response = await fetch("/tailwind.css");
+      const text = await response.text();
+
+      // save the CSS text to the ref
+      cssText.value = text;
+
+      // convert the CSS text into an array of objects
+      const regex =
+        /((?:\.[a-zA-Z0-9_-]+)|(?:[a-zA-Z0-9_-]+))(?:\s*,\s*((?:\.[a-zA-Z0-9_-]+)|(?:[a-zA-Z0-9_-]+)))*\s*{([^}]+)}/g;
+      let match;
+      while ((match = regex.exec(cssText.value))) {
+        const selectors = match[1].split(",").map((s) => s.trim());
+        const styles = match[3]
+          .trim()
+          .split(";")
+          .filter(Boolean)
+          .map((style) => {
+            const [property, value] = style.split(":");
+            return {
+              property: property.trim(),
+              value: value ? value.trim() : "",
+            };
+          });
+        cssRules.value.push({ selectors, styles });
+      }
+    };
+
     return {
       chips,
       filteredCountries,
@@ -1128,6 +1164,9 @@ export default defineComponent({
       elements,
       getColor,
       elementConfig,
+      cssText,
+      cssRules,
+      parseCSS,
     };
   },
 });
