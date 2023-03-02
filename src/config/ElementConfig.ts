@@ -38,6 +38,8 @@ export const elements: Array<any> = [
         name: "text",
         type: "colour-picker",
         default: "3F3F46",
+        classes: [".p-inputtext"],
+        property: "color",
       },
       {
         text: "Secondary Text",

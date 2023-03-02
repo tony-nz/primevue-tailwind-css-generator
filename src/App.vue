@@ -149,6 +149,7 @@ import {
   TabsExample,
   ToggleExample,
 } from "./components/examples";
+import postcss from "postcss";
 
 export default defineComponent({
   name: "App",
@@ -179,10 +180,12 @@ export default defineComponent({
     const dynamicCss = computed(() => css.value);
     // Inject the dynamic CSS into the page
     const styleElement = document.createElement("style");
+    // Parse CSS text// Parse CSS text
 
     // watch([textColor, bgColor], () => {
     //   styleElement.innerHTML = dynamicCss.value;
     // });
+    const cssRules = ref();
     onMounted(() => {
       fetch("/tailwind.css")
         .then((response) => response.text())
@@ -190,6 +193,19 @@ export default defineComponent({
           css.value = data;
           styleElement.innerHTML = css.value;
           document.head.appendChild(styleElement);
+
+          const ast = postcss.parse(data);
+          cssRules.value = ast.nodes
+            .filter((node) => node.type === "rule")
+            .map((rule: any) => ({
+              name: rule.selector,
+              children: rule.nodes
+                .filter((node: any) => node.type === "decl")
+                .map((declaration: any) => ({
+                  name: declaration.prop,
+                  value: declaration.value,
+                })),
+            }));
         });
       elements.forEach((element) => {
         if (element.children) {
@@ -207,6 +223,7 @@ export default defineComponent({
       dynamicCss,
       elements,
       elementConfig,
+      cssRules,
     };
   },
 });
