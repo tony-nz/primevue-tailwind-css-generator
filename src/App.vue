@@ -135,7 +135,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { elements } from "./config/ElementConfig";
 import Card from "./components/Card.vue";
 import {
@@ -166,8 +166,31 @@ export default defineComponent({
   },
   setup() {
     const elementConfig: any = ref({});
+    const css = ref("");
 
+    // const dynamicCss = computed(
+    //   () => `
+    //   .my-class {
+    //     color: ${textColor.value};
+    //     background-color: ${bgColor.value};
+    //   }
+    // `
+    // );
+    const dynamicCss = computed(() => css.value);
+    // Inject the dynamic CSS into the page
+    const styleElement = document.createElement("style");
+
+    // watch([textColor, bgColor], () => {
+    //   styleElement.innerHTML = dynamicCss.value;
+    // });
     onMounted(() => {
+      fetch("/tailwind.css")
+        .then((response) => response.text())
+        .then((data) => {
+          css.value = data;
+          styleElement.innerHTML = css.value;
+          document.head.appendChild(styleElement);
+        });
       elements.forEach((element) => {
         if (element.children) {
           element.children.forEach((child: any) => {
@@ -180,47 +203,10 @@ export default defineComponent({
       });
     });
 
-    const getColor = (elementName: string) => {
-      return "#" + elementConfig.value[elementName];
-    };
-    const cssText = ref(""); // store the CSS text here
-    const cssRules: any = ref([]); // the array of objects representing the CSS
-    const parseCSS = async () => {
-      // fetch the CSS file
-      const response = await fetch("/tailwind.css");
-      const text = await response.text();
-
-      // save the CSS text to the ref
-      cssText.value = text;
-
-      // convert the CSS text into an array of objects
-      const regex =
-        /((?:\.[a-zA-Z0-9_-]+)|(?:[a-zA-Z0-9_-]+))(?:\s*,\s*((?:\.[a-zA-Z0-9_-]+)|(?:[a-zA-Z0-9_-]+)))*\s*{([^}]+)}/g;
-      let match;
-      while ((match = regex.exec(cssText.value))) {
-        const selectors = match[1].split(",").map((s) => s.trim());
-        const styles = match[3]
-          .trim()
-          .split(";")
-          .filter(Boolean)
-          .map((style) => {
-            const [property, value] = style.split(":");
-            return {
-              property: property.trim(),
-              value: value ? value.trim() : "",
-            };
-          });
-        cssRules.value.push({ selectors, styles });
-      }
-    };
-
     return {
+      dynamicCss,
       elements,
-      getColor,
       elementConfig,
-      cssText,
-      cssRules,
-      parseCSS,
     };
   },
 });

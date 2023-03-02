@@ -48,7 +48,7 @@ import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
 
 // styling
-import "primevue/resources/themes/tailwind-light/theme.css";
+// import "primevue/resources/themes/tailwind-light/theme.css";
 // import "../../assets/tailwind-light/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
