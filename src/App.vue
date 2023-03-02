@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ cssTextOutput }}
     <!-- Static sidebar for desktop -->
     <div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
@@ -10,7 +11,7 @@
           <img src="./assets/logo.svg" class="logo" alt="topbar-logo" />
         </div>
         <div class="mt-5 p-3">
-          <nav class="">
+          <nav>
             <div v-for="item in elements" :key="item.name" class="mb-4">
               <h2 class="font-medium mb-2">{{ item.name }}</h2>
               <div
@@ -52,29 +53,6 @@
           <span class="sr-only">Open sidebar</span>
           <MenuAlt2Icon class="h-6 w-6" aria-hidden="true" />
         </button>
-        <div class="flex-1 px-4 flex justify-between">
-          <div class="flex-1 flex">
-            <form class="w-full flex md:ml-0" action="#" method="GET">
-              <label for="search-field" class="sr-only">Search</label>
-              <div
-                class="relative w-full text-gray-400 focus-within:text-gray-600"
-              >
-                <div
-                  class="absolute inset-y-0 left-0 flex items-center pointer-events-none"
-                >
-                  <SearchIcon class="h-5 w-5" aria-hidden="true" />
-                </div>
-                <input
-                  id="search-field"
-                  class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                  placeholder="Search"
-                  type="search"
-                  name="search"
-                />
-              </div>
-            </form>
-          </div>
-        </div>
       </div>
 
       <main class="mx-auto py-8 relative flex flex-col justify-center">
@@ -179,20 +157,39 @@ export default defineComponent({
     // );
     const dynamicCss = computed(() => css.value);
     // Inject the dynamic CSS into the page
-    const styleElement = document.createElement("style");
+    let styleElement = document.createElement("style");
     // Parse CSS text// Parse CSS text
 
     // watch([textColor, bgColor], () => {
     //   styleElement.innerHTML = dynamicCss.value;
     // });
     const cssRules = ref();
+    // Stringify CSS rules to CSS text
+    const cssTextOutput = () => {
+      return JSON.parse(
+        JSON.stringify({
+          type: "stylesheet",
+          stylesheet: {
+            rules: cssRules.value.map((rule: any) => ({
+              type: "rule",
+              selectors: [rule.name],
+              declarations: rule.children.map((child: any) => ({
+                type: "declaration",
+                property: child.name,
+                value: child.value,
+              })),
+            })),
+          },
+        })
+      );
+    };
     onMounted(() => {
       fetch("/tailwind.css")
         .then((response) => response.text())
         .then((data) => {
           css.value = data;
-          styleElement.innerHTML = css.value;
-          document.head.appendChild(styleElement);
+          // styleElement.innerHTML = css.value;
+          // document.head.appendChild(styleElement);
 
           const ast = postcss.parse(data);
           cssRules.value = ast.nodes
@@ -206,6 +203,13 @@ export default defineComponent({
                   value: declaration.value,
                 })),
             }));
+          // stringify cssRules
+          setTimeout(() => {
+            styleElement.innerHTML = "" + cssTextOutput;
+            document.head.appendChild(styleElement);
+          }, 5000);
+          // styleElement.innerHTML = cssTextOutput.value;
+          // document.head.appendChild(styleElement);
         });
       elements.forEach((element) => {
         if (element.children) {
@@ -224,6 +228,7 @@ export default defineComponent({
       elements,
       elementConfig,
       cssRules,
+      cssTextOutput,
     };
   },
 });
