@@ -1,6 +1,5 @@
 <template>
-  <div>
-    {{ cssTextOutput }}
+  <div v-if="cssRules">
     <!-- Static sidebar for desktop -->
     <div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
@@ -24,11 +23,15 @@
                 </div>
                 <div
                   v-if="
-                    child.type === 'colour-picker' && elementConfig[child.name]
+                    child.type === 'colour-picker' &&
+                    elementConfig[child.name] !== undefined
                   "
-                  class="p-1 bg-gray-200"
                 >
-                  <ColorPicker v-model="elementConfig[child.name]" />
+                  <LvColorpicker
+                    v-model="elementConfig[child.name]"
+                    class="bg-gray-200 p-1 mx-auto my-auto"
+                    withoutInput
+                  />
                 </div>
                 <div v-else-if="child.type === 'text'" class="flex justify-end">
                   <input
@@ -51,7 +54,7 @@
           @click="sidebarOpen = true"
         >
           <span class="sr-only">Open sidebar</span>
-          <MenuAlt2Icon class="h-6 w-6" aria-hidden="true" />
+          <!-- <MenuAlt2Icon class="h-6 w-6" aria-hidden="true" /> -->
         </button>
       </div>
 
@@ -113,9 +116,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, watch, ref } from "vue";
 import { elements } from "./config/ElementConfig";
-import Card from "./components/Card.vue";
 import {
   AccordionExample,
   ButtonsExample,
@@ -127,11 +129,14 @@ import {
   TabsExample,
   ToggleExample,
 } from "./components/examples";
+import Card from "./components/Card.vue";
 import postcss from "postcss";
+import LvColorpicker from "lightvue/color-picker";
 
 export default defineComponent({
   name: "App",
   components: {
+    LvColorpicker,
     AccordionExample,
     ButtonsExample,
     InputExample,
@@ -145,53 +150,49 @@ export default defineComponent({
   },
   setup() {
     const elementConfig: any = ref({});
-    const css = ref("");
-
-    // const dynamicCss = computed(
-    //   () => `
-    //   .my-class {
-    //     color: ${textColor.value};
-    //     background-color: ${bgColor.value};
-    //   }
-    // `
-    // );
-    const dynamicCss = computed(() => css.value);
-    // Inject the dynamic CSS into the page
-    let styleElement = document.createElement("style");
-    // Parse CSS text// Parse CSS text
-
-    // watch([textColor, bgColor], () => {
-    //   styleElement.innerHTML = dynamicCss.value;
-    // });
     const cssRules = ref();
-    // Stringify CSS rules to CSS text
-    const cssTextOutput = () => {
-      return JSON.parse(
-        JSON.stringify({
-          type: "stylesheet",
-          stylesheet: {
-            rules: cssRules.value.map((rule: any) => ({
-              type: "rule",
-              selectors: [rule.name],
-              declarations: rule.children.map((child: any) => ({
-                type: "declaration",
-                property: child.name,
-                value: child.value,
-              })),
-            })),
-          },
+    let styleElement = document.createElement("style");
+
+    /**
+     * Update the CSS on the page
+     */
+    const updateCss = () => {
+      if (!cssRules.value) {
+        return;
+      }
+      styleElement.innerHTML = cssRules.value
+        .map((rule: any) => {
+          const declarations = rule.children
+            .map(
+              (declaration: any) => `${declaration.name}: ${declaration.value};`
+            )
+            .join(" ");
+
+          return `${rule.name} { ${declarations} }`;
         })
-      );
+        .join(" ");
+      document.head.appendChild(styleElement);
+      console.log("Updated");
     };
+
     onMounted(() => {
       fetch("/tailwind.css")
         .then((response) => response.text())
         .then((data) => {
-          css.value = data;
-          // styleElement.innerHTML = css.value;
-          // document.head.appendChild(styleElement);
+          /**
+           * Inject the dynamic CSS into the page
+           */
+          styleElement.innerHTML = data;
+          document.head.appendChild(styleElement);
 
+          /**
+           * Parse the CSS into an AST
+           */
           const ast = postcss.parse(data);
+
+          /**
+           * Convert raw CSS to a more usable format
+           */
           cssRules.value = ast.nodes
             .filter((node) => node.type === "rule")
             .map((rule: any) => ({
@@ -203,19 +204,50 @@ export default defineComponent({
                   value: declaration.value,
                 })),
             }));
-          // stringify cssRules
-          setTimeout(() => {
-            styleElement.innerHTML = "" + cssTextOutput;
-            document.head.appendChild(styleElement);
-          }, 5000);
-          // styleElement.innerHTML = cssTextOutput.value;
-          // document.head.appendChild(styleElement);
+
+          // loop through cssRules and find all the values that equal a defined value
+          // then set the value in the elementConfig
+          cssRules.value.forEach((rule: any) => {
+            rule.children.forEach((child: any) => {
+              elements.forEach((element) => {
+                if (element.children) {
+                  element.children.forEach((childElement: any) => {
+                    if (childElement.name === child.name) {
+                      elementConfig.value[childElement.name] = child.value;
+                    }
+                  });
+                }
+              });
+            });
+          });
         });
+      /**
+       * tmp function to get all the selectors that have a xxx of xxx
+       */
+      setTimeout(() => {
+        const selectorsWithWhiteColor = cssRules.value
+          .filter((rule: any) => {
+            // filter out rules that don't have a "color" declaration with the value "#ffffff"
+            return rule.children.some((declaration: any) => {
+              return (
+                declaration.name === "color" && declaration.value === "#3f3f46"
+              );
+            });
+          })
+          .map((rule: any) => {
+            // return the selector for each rule that has a "color" declaration with the value "#ffffff"
+            return rule.name;
+          });
+
+        // console.log(selectorsWithWhiteColor);
+      }, 1000);
+      /**
+       * Loop through all elements and set default values
+       */
       elements.forEach((element) => {
         if (element.children) {
           element.children.forEach((child: any) => {
             if (child.name && child.default) {
-              console.log(child);
               elementConfig.value[child.name] = child.default;
             }
           });
@@ -223,13 +255,61 @@ export default defineComponent({
       });
     });
 
+    const updateCssRules = () => {
+      // loop through elementConfig
+      Object.keys(elementConfig.value).forEach((ele) => {
+        const matchingObject = elements.find((obj: any) =>
+          obj.children.find((child: any) => child.name === ele)
+        );
+
+        if (matchingObject) {
+          const matchingChild = matchingObject.children.find(
+            (child: any) => child.name === ele
+          );
+          const newValue = elementConfig.value[ele];
+          const property = matchingChild.property;
+          const classes = matchingChild.classes;
+
+          if (!classes || !property || !newValue || !cssRules.value) {
+            return;
+          }
+          cssRules.value.forEach((rule: any) => {
+            if (classes.includes(rule.name)) {
+              rule.children.forEach((declaration: any) => {
+                if (declaration.name === property) {
+                  declaration.value = newValue;
+                }
+              });
+            }
+          });
+        }
+      });
+      updateCss();
+    };
+
+    watch(elementConfig.value, () => {
+      updateCssRules();
+    });
+
     return {
-      dynamicCss,
       elements,
       elementConfig,
       cssRules,
-      cssTextOutput,
+      updateCss,
     };
   },
 });
 </script>
+
+<style>
+.lv-colorpicker__colorblock-wrap {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  top: 0 !important;
+  right: 0 !important;
+  border-radius: 3px !important;
+  cursor: pointer;
+  display: block;
+}
+</style>

@@ -16,7 +16,7 @@ import Calendar from "primevue/calendar";
 import Chart from "primevue/chart";
 import Checkbox from "primevue/checkbox";
 import Chips from "primevue/chips";
-import ColorPicker from "primevue/colorpicker";
+// import ColorPicker from "primevue/colorpicker";
 import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmPopup from "primevue/confirmpopup";
@@ -25,6 +25,7 @@ import DataTable from "primevue/datatable";
 import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
+import Fieldset from "primevue/fieldset";
 import FileUpload from "primevue/fileupload";
 import InputMask from "primevue/inputmask";
 import InputNumber from "primevue/inputnumber";
@@ -34,6 +35,7 @@ import Listbox from "primevue/listbox";
 import Menu from "primevue/menu";
 import Menubar from "primevue/menubar";
 import MultiSelect from "primevue/multiselect";
+import Panel from "primevue/panel";
 import PanelMenu from "primevue/panelmenu";
 import ProgressBar from "primevue/progressbar";
 import RadioButton from "primevue/radiobutton";
@@ -51,7 +53,7 @@ import Tree from "primevue/tree";
 // import "primevue/resources/themes/tailwind-light/theme.css";
 // import "../../assets/tailwind-light/theme.css";
 import "primevue/resources/primevue.min.css";
-import "primeicons/primeicons.css";
+// import "primeicons/primeicons.css";
 
 /**
  * Initialize PrimeVUE component
@@ -72,7 +74,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("Chart", Chart);
   app.component("Checkbox", Checkbox);
   app.component("Chips", Chips);
-  app.component("ColorPicker", ColorPicker);
+  // app.component("ColorPicker", ColorPicker);
   app.component("Column", Column);
   app.component("ConfirmDialog", ConfirmDialog);
   app.component("ConfirmPopup", ConfirmPopup);
@@ -81,6 +83,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("Dialog", Dialog);
   app.component("Dropdown", Dropdown);
   app.component("Editor", Editor);
+  app.component("Fieldset", Fieldset);
   app.component("FileUpload", FileUpload);
   app.component("InputMask", InputMask);
   app.component("InputNumber", InputNumber);
@@ -90,6 +93,7 @@ export function initPrimeVue(app: App<Element>) {
   app.component("Menu", Menu);
   app.component("Menubar", Menubar);
   app.component("MultiSelect", MultiSelect);
+  app.component("Panel", Panel);
   app.component("PanelMenu", PanelMenu);
   app.component("ProgressBar", ProgressBar);
   app.component("RadioButton", RadioButton);

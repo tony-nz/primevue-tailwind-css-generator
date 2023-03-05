@@ -62,7 +62,7 @@
     <h1 class="text-xl font-semi mb-4">Calendar</h1>
     <Calendar
       inputId="icon"
-      v-model="date3"
+      v-model="date"
       :showIcon="true"
       class="w-full mb-4"
     />
@@ -93,6 +93,7 @@ export default defineComponent({
     const chips = ref();
     const countries = ref();
     const countryService = ref(new CountryService());
+    const date = ref();
     const filteredCountries = ref();
     const inputNumber = ref();
     const selectedCountry = ref();
@@ -119,6 +120,7 @@ export default defineComponent({
     return {
       chips,
       countries,
+      date,
       filteredCountries,
       inputNumber,
       searchCountry,
