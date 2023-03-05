@@ -29,6 +29,7 @@
                 >
                   <LvColorpicker
                     v-model="elementConfig[child.name]"
+                    :value="elementConfig[child.name]"
                     class="bg-gray-200 p-1 mx-auto my-auto"
                     withoutInput
                   />
@@ -205,20 +206,12 @@ export default defineComponent({
                 })),
             }));
 
-          // loop through cssRules and find all the values that equal a defined value
-          // then set the value in the elementConfig
-          cssRules.value.forEach((rule: any) => {
-            rule.children.forEach((child: any) => {
-              elements.forEach((element) => {
-                if (element.children) {
-                  element.children.forEach((childElement: any) => {
-                    if (childElement.name === child.name) {
-                      elementConfig.value[childElement.name] = child.value;
-                    }
-                  });
-                }
+          elements.forEach((element) => {
+            if (element.children) {
+              element.children.forEach((childElement: any) => {
+                elementConfig.value[childElement.name] = childElement.default;
               });
-            });
+            }
           });
         });
       /**
@@ -230,7 +223,7 @@ export default defineComponent({
             // filter out rules that don't have a "color" declaration with the value "#ffffff"
             return rule.children.some((declaration: any) => {
               return (
-                declaration.name === "color" && declaration.value === "#3f3f46"
+                declaration.name === "color" && declaration.value === "#71717A"
               );
             });
           })
@@ -239,7 +232,7 @@ export default defineComponent({
             return rule.name;
           });
 
-        // console.log(selectorsWithWhiteColor);
+        console.log(selectorsWithWhiteColor);
       }, 1000);
       /**
        * Loop through all elements and set default values
@@ -261,7 +254,6 @@ export default defineComponent({
         const matchingObject = elements.find((obj: any) =>
           obj.children.find((child: any) => child.name === ele)
         );
-
         if (matchingObject) {
           const matchingChild = matchingObject.children.find(
             (child: any) => child.name === ele
@@ -269,7 +261,6 @@ export default defineComponent({
           const newValue = elementConfig.value[ele];
           const property = matchingChild.property;
           const classes = matchingChild.classes;
-
           if (!classes || !property || !newValue || !cssRules.value) {
             return;
           }
@@ -282,6 +273,7 @@ export default defineComponent({
               });
             }
           });
+          console.log(cssRules.value);
         }
       });
       updateCss();
